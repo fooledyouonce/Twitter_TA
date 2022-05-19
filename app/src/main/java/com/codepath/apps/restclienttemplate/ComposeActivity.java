@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 public class ComposeActivity extends AppCompatActivity {
 
+    public static final int MAX_TWEET_LENGTH = 280;
     EditText etCompose;
     Button btnTweet;
     
@@ -30,7 +31,7 @@ public class ComposeActivity extends AppCompatActivity {
                     Toast.makeText(ComposeActivity.this, "Your tweet cannot be empty!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (tweetContent.length() > 280) {
+                if (tweetContent.length() > MAX_TWEET_LENGTH) {
                     Toast.makeText(ComposeActivity.this, "Your tweet must be less than 280 characters!", Toast.LENGTH_LONG).show();
                 }
                 //make api call to twitter to publish tweet

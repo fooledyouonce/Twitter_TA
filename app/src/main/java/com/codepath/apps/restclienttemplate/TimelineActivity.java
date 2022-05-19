@@ -84,7 +84,7 @@ public class TimelineActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.actionCompose) {
-            //checking to see if compose button is working
+            goComposeActivity();;
             //Toast.makeText(this, "Compose clicked!", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -98,6 +98,11 @@ public class TimelineActivity extends AppCompatActivity {
         Intent i = new Intent(this, LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+        finish();
+    }
+    private void goComposeActivity() {
+        Intent i = new Intent(this, ComposeActivity.class);
         startActivity(i);
         finish();
     }
