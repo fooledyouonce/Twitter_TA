@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApp;
@@ -67,7 +70,24 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
     }
-    //TODO: finish logout
+    //logout procedure
+    //https://developer.android.com/training/appbar/actions#java
+    //1. create new menu resource file and inflate the layout
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.logout, menu);
+        return true;
+    }
+    //2. create a function to check for clicks and perform an action
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.actionLogout) {
+            goLoginActivity();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //3. navigate to login activity
     private void goLoginActivity() {
         //forget who's logged in
         TwitterApp.getRestClient(this).clearAccessToken();
