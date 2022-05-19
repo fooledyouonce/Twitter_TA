@@ -1,6 +1,5 @@
 package com.codepath.apps.restclienttemplate;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,10 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.TwitterApp;
-import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
@@ -71,11 +68,12 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
     //logout procedure
+    //NOTE: use menu_main for both logout and compose
     //https://developer.android.com/training/appbar/actions#java
     //1. create new menu resource file and inflate the layout
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.logout, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
     //2. create a function to check for clicks and perform an action
@@ -83,6 +81,11 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionLogout) {
             goLoginActivity();
+            return true;
+        }
+        if (item.getItemId() == R.id.actionCompose) {
+            //checking to see if compose button is working
+            //Toast.makeText(this, "Compose clicked!", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);

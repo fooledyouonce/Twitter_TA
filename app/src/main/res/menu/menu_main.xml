@@ -1,6 +1,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android" >
     <item
+        android:id="@+id/actionCompose"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Compose"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/actionLogout"
         android:icon="?attr/actionModeCloseDrawable"
         android:title="Logout"
