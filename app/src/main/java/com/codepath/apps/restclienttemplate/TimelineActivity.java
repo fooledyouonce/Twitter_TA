@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -65,5 +66,16 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure " + response, throwable);
             }
         });
+    }
+    //TODO: finish logout
+    private void goLoginActivity() {
+        //forget who's logged in
+        TwitterApp.getRestClient(this).clearAccessToken();
+        //navigate to login
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+        finish();
     }
 }
