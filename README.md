@@ -29,7 +29,7 @@ The following **optional** features are implemented:
   * [ ] User that wrote the original tweet is **automatically "@" replied in compose**
 * [ ] User can tap a tweet to **open a detailed tweet view**
   * [ ] User can **take favorite (and unfavorite) or retweet** actions on a tweet
-* [ ] User can view more tweets as they scroll with infinite pagination
+* [X] User can view more tweets as they scroll with infinite pagination
 * [ ] Compose tweet functionality is built using modal overlay
 * [ ] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
 * [ ] Replace all icon drawables and other static image assets with [vector drawables](http://guides.codepath.org/android/Drawables#vector-drawables) where appropriate.
@@ -39,8 +39,8 @@ The following **optional** features are implemented:
 * [ ] User can **open the twitter app offline and see last loaded tweets**. Persisted in SQLite tweets are refreshed on every application launch. While "live data" is displayed when app can get it from Twitter API, it is also saved for use in offline mode.
 
 The following **additional** features are implemented:
-
 * N/A
+
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
