@@ -43,23 +43,37 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public int getItemCount() {
         return tweets.size();
     }
+    //for swiperefresh
+    //clear elements of recycler
+    public void clear() {
+        tweets.clear();
+        notifyDataSetChanged();
+    }
+    //add list of items
+    public void addAll(List<Tweet> tweetList) {
+        tweets.addAll(tweetList);
+        notifyDataSetChanged();
+    }
     //define viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfileImage;
         TextView tvScreenName;
         TextView tvBody;
+        TextView tvTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
+            tvTime = itemView.findViewById(R.id.tvTime);
         }
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
             tvBody.setText(tweet.body);
             Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            tvTime.setText(tweet.getFormattedTimestamp());
         }
     }
 }
