@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
-
+//TODO: SwipeToRefresh
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     //pass in context and list of tweets
     Context context;
