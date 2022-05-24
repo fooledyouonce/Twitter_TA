@@ -2,10 +2,10 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
@@ -63,19 +62,19 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     //define viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        RelativeLayout rlTweet;
         ImageView ivProfileImage;
         TextView tvScreenName;
         TextView tvBody;
         TextView tvTime;
-        RelativeLayout rlTweet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            rlTweet = itemView.findViewById(R.id.rlTweet);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvTime = itemView.findViewById(R.id.tvTime);
-            rlTweet = itemView.findViewById(R.id.rlTweet);
         }
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
@@ -92,10 +91,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
-                    //Intent i = new Intent(context, DetailActivity.class);
-                    //context.startActivity(i);
+                    Intent i = new Intent(context, DetailActivity.class);
+                    context.startActivity(i);
                 }
             });
         }
+
     }
 }
