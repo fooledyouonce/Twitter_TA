@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codepath.apps.restclienttemplate"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,19 +12,22 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:targetSdkVersion="31">
+        android:targetSdkVersion="31"
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".ComposeActivity"
+            android:name=".DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".TimelineActivity"
+            android:name=".activity.ComposeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.TimelineActivity"
             android:exported="false" /> <!-- As of Android 12, android:exported must be set; use true to make the activity available to other apps, and false otherwise. For launcher activities, this should be set to true. -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,6 @@
 package com.codepath.apps.restclienttemplate.models;
 
-import com.codepath.apps.restclienttemplate.TimeFormatter;
+import com.codepath.apps.restclienttemplate.helper.TimeFormatter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,21 +1,26 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
+import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import java.util.List;
-//TODO: SwipeToRefresh
+
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     //pass in context and list of tweets
     Context context;
@@ -62,6 +67,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvBody;
         TextView tvTime;
+        RelativeLayout rlTweet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +75,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvTime = itemView.findViewById(R.id.tvTime);
+            rlTweet = itemView.findViewById(R.id.rlTweet);
         }
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
@@ -80,6 +87,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     //.transform(new RoundedCornersTransformation(radius, margin))
                     .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
+            //TODO: Navigate to DetailActivity
+            rlTweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
+                    //Intent i = new Intent(context, DetailActivity.class);
+                    //context.startActivity(i);
+                }
+            });
         }
     }
 }
