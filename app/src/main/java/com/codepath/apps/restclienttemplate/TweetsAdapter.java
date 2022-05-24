@@ -86,12 +86,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     //.transform(new RoundedCornersTransformation(radius, margin))
                     .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
-            //TODO: Navigate to DetailActivity
             rlTweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
+                    String screen_name = tvScreenName.toString();
+                    String body = tvBody.toString();
+                    String time = tvTime.toString();
+                    Glide.with(context).load(tweet.user.profileImageUrl)
+                            //.transform(new RoundedCornersTransformation(radius, margin))
+                            .into(ivProfileImage);
+
+                    //Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(context, DetailActivity.class);
+                    i.putExtra("screen_name", screen_name);
+                    i.putExtra("body", body);
+                    i.putExtra("time", time);
                     context.startActivity(i);
                 }
             });
