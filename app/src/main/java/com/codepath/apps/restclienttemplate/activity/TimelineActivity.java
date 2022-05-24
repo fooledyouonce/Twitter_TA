@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,8 @@ import com.codepath.apps.restclienttemplate.TweetsAdapter;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.TweetDao;
+import com.codepath.apps.restclienttemplate.models.TweetWithUser;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -34,6 +37,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
+    TweetDao tweetDao;
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -48,6 +52,7 @@ public class TimelineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timeline);
 
         client = TwitterApp.getRestClient(this);
+        tweetDao = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
 
         //find swiperefresh
         swipeContainer = findViewById(R.id.swipeContainer);
@@ -81,6 +86,16 @@ public class TimelineActivity extends AppCompatActivity {
                 loadMoreData();
             }
         };
+        //query for existing tweets in DB
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "Showing DB data");
+                List<TweetWithUser> tweetWithUsers = tweetDao.recentItems();
+                tweetsFromDB = TweetWithUser.getTweetList(tweetWithUsers);
+                adapter.addAll(tweetsFromDB);
+            }
+        });
         //add scroll listener to recycler view
         rvTweets.addOnScrollListener(scrollListener);
         populateHomeTimeline();
