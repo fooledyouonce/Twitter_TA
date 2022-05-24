@@ -2,9 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlTweet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/ivProfileImage"
@@ -35,6 +37,9 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="2dp"
         android:layout_toEndOf="@+id/ivProfileImage"
+        android:autoLink="all"
+        android:linksClickable="true"
+        android:textColorLink="#1DA1F2"
         tools:text="this is a sample tweet" />
 
     <TextView
@@ -46,4 +51,17 @@
         android:layout_marginBottom="0dp"
         android:layout_toEndOf="@+id/tvScreenName"
         tools:text="-  2hr" />
+
+    <Button
+        android:id="@+id/btnReply"
+        android:layout_width="50dp"
+        android:layout_height="34dp"
+        android:layout_below="@+id/tvBody"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        android:clickable="false"
+        android:text="reply"
+        android:textSize="8sp"
+        android:onClick="goReplyComposeActivity" />
+
 </RelativeLayout>

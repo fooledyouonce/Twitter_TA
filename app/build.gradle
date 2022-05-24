@@ -59,4 +59,9 @@ dependencies {
     implementation 'com.facebook.stetho:stetho:1.5.1'
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
+    //TODO: implement glide transformations
+    /*//glide
+    implementation 'jp.wasabeef:glide-transformations:4.1.0'
+    // If you want to use the GPU Filters
+    implementation 'jp.co.cyberagent.android:gpuimage:2.0.4'*/
 }

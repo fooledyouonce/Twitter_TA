@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,7 +73,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
             tvBody.setText(tweet.body);
-            Glide.with(context).load(tweet.user.profileImageUrl).into(ivProfileImage);
+            int radius = 30;
+            int margin = 10;
+            //TODO: Rounded pfp
+            Glide.with(context).load(tweet.user.profileImageUrl)
+                    //.transform(new RoundedCornersTransformation(radius, margin))
+                    .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
         }
     }
