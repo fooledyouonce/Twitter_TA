@@ -1,6 +1,82 @@
-# RestClientTemplate [![Build Status](https://travis-ci.org/codepath/android-rest-client-template.svg?branch=master)](https://travis-ci.org/codepath/android-rest-client-template)
+# Project 3 - *Elonless Twitter*
 
-## Overview
+**Elonless Twitter** is an android app that allows a user to view their Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
+
+Time spent: **10** hours spent in total
+
+## User Stories
+
+The following **required** functionality is completed:
+
+* [X] User can **sign in to Twitter** using OAuth login
+* [X] User can **view tweets from their home timeline**
+  * [X] User is displayed the username, name, and body for each tweet
+  * [X] User is displayed the [relative timestamp](https://gist.github.com/nesquena/f786232f5ef72f6e10a7) for each tweet "8m", "7h"
+* [X] User can **compose and post a new tweet**
+  * [X] User can click a “Compose” icon in the Action Bar on the top right
+  * [X] User can then enter a new tweet and post this to Twitter
+  * [X] User is taken back to home timeline with **new tweet visible** in timeline
+  * [X] Newly created tweet should be manually inserted into the timeline and not rely on a full refresh
+* [X] User can **see a counter with total number of characters left for tweet** on compose tweet page
+* [X] User can **pull down to refresh tweets timeline**
+* [ ] User can **see embedded image media within a tweet** on list or detail view.
+
+The following **optional** features are implemented:
+
+* [X] User is using **"Twitter branded" colors and styles**
+* [X] User sees an **indeterminate progress indicator** when any background or network task is happening
+* [X] User can **select "reply" from home timeline to respond to a tweet**
+  * [ ] User that wrote the original tweet is **automatically "@" replied in compose**
+* [ ] User can tap a tweet to **open a detailed tweet view**
+  * [ ] User can **take favorite (and unfavorite) or retweet** actions on a tweet
+* [X] User can view more tweets as they scroll with infinite pagination
+* [ ] Compose tweet functionality is built using modal overlay
+* [X] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
+* [ ] Replace all icon drawables and other static image assets with [vector drawables](http://guides.codepath.org/android/Drawables#vector-drawables) where appropriate.
+* [ ] User can view following / followers list through any profile they view.
+* [X] Use the View Binding library to reduce view boilerplate.
+* [ ] On the Twitter timeline, apply scrolling effects such as [hiding/showing the toolbar](http://guides.codepath.org/android/Using-the-App-ToolBar#reacting-to-scroll) by implementing [CoordinatorLayout](http://guides.codepath.org/android/Handling-Scrolls-with-CoordinatorLayout#responding-to-scroll-events).
+* [X] User can **open the twitter app offline and see last loaded tweets**. Persisted in SQLite tweets are refreshed on every application launch. While "live data" is displayed when app can get it from Twitter API, it is also saved for use in offline mode.
+
+The following **additional** features are implemented:
+* N/A
+
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+
+GIF created with [Kap](https://getkap.co/).
+
+## Notes
+
+N/A
+
+## Open-source libraries used
+
+- [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
+- [Glide](https://github.com/bumptech/glide) - Image loading and caching library for Android
+
+## License
+
+    Copyright [2022] [Emily Crowl]
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+## RestClientTemplate [![Build Status](https://travis-ci.org/codepath/android-rest-client-template.svg?branch=master)](https://travis-ci.org/codepath/android-rest-client-template)
+
+### Overview
 
 RestClientTemplate is a skeleton Android project that makes writing Android apps sourced from OAuth JSON REST APIs as easy as possible. This skeleton project
 combines the best libraries and structure to enable quick development of rich API clients. The following things are supported out of the box:
@@ -18,9 +94,9 @@ The following libraries are used to make this possible:
  * [Glide](https://github.com/bumptech/glide) - Used for async image loading and caching them in memory and on disk.
  * [Room](https://developer.android.com/training/data-storage/room/index.html) - Simple ORM for persisting a local SQLite database on the Android device
 
-## Usage
+### Usage
 
-### 1. Configure the REST client
+#### 1. Configure the REST client
 
 Open `src/com.codepath.apps.restclienttemplate/RestClient.java`. Configure the `REST_API_INSTANCE` and`REST_URL`.
  
@@ -103,7 +179,7 @@ client.getSomething(new JsonHttpResponseHandler() {
 ```
 Check out [Android Async HTTP Docs](https://github.com/codepath/AsyncHttpClient) for more request creation details.
 
-### 2. Define the Models
+#### 2. Define the Models
 
 In the `src/com.codepath.apps.restclienttemplate.models`, create the models that represent the key data to be parsed and persisted within your application.
 
@@ -217,7 +293,7 @@ public class Tweet {
 
 Now you have a model that supports proper creation based on JSON. Create models for all the resources necessary for your mobile client.
 
-### 4. Define your queries
+#### 3. Define your queries
 
 Next, you will need to define the queries by creating a Data Access Object (DAO) class.   Here is an example of declaring queries to return a Tweet by the post ID, retrieve the most recent tweets, and insert tweets.   
 
@@ -248,7 +324,7 @@ public interface TwitterDao {
 
 The examples here show how to perform basic queries on the Tweet table.  If you need to declare one-to-many or many-to-many relations, see the guides on using the [@Relation](https://developer.android.com/reference/android/arch/persistence/room/Relation) and [@ForeignKey](https://developer.android.com/reference/android/arch/persistence/room/ForeignKey) annotations.
 
-### 5. Create database
+#### 4. Create database
 
 We need to define a database that extends `RoomDatabase` and describe which entities as part of this database. We also need to include what data access objects are to be included.  If the entities are modified or additional ones are included, the version number will need to be changed.  Note that only the `Tweet` class is declared:
 
@@ -281,7 +357,7 @@ android {
 }
 ```
 
-### 6. Initialize database
+#### 5. Initialize database
 
 Inside your application class, you will need to initialize the database and specify a name for it.
 
@@ -303,7 +379,7 @@ public class RestClientApp extends Application {
 }
 ```
 
-### 7. Setup Your Authenticated Activities
+#### 6. Setup Your Authenticated Activities
 
 Open `src/com.codepath.apps.restclienttemplate/LoginActivity.java` and configure the `onLoginSuccess` method
 which fires once your app has access to the authenticated API. Launch an activity and begin using your REST client:
@@ -358,9 +434,9 @@ AsyncTask<Tweet, Void, Void> task = new AsyncTask<Tweet, Void, Void>() {
 
 That's all you need to get started. From here, hook up your activities and their behavior, adjust your models and add more REST endpoints.
 
-### Extras
+#### Extras
 
-#### Loading Images with Glide
+##### Loading Images with Glide
 
 If you want to load a remote image url into a particular ImageView, you can use Glide to do that with:
 
@@ -371,7 +447,7 @@ Glide.with(this).load(imageUrl)
 
 This will load an image into the specified ImageView and resize the image to fit.
 
-#### Logging Out
+##### Logging Out
 
 You can log out by clearing the access token at any time through the client object:
 
@@ -380,11 +456,11 @@ RestClient client = RestApplication.getRestClient();
 client.clearAccessToken();
 ```
 
-### Viewing SQL table
+#### Viewing SQL table
 
 You can use `chrome://inspect` to view the SQL tables once the app is running on your emulator.  See [this guide](https://guides.codepath.com/android/Debugging-with-Stetho) for more details.
 
-### Adding OAuth2 support
+#### Adding OAuth2 support
 
 Google uses OAuth2 APIs so make sure to use the `GoogleApi20` instance:
 
@@ -434,7 +510,7 @@ public static final String REST_CALLBACK_URL_TEMPLATE = "https://localhost";
 
 Make sure to update the `cprest` and `intent_host` to match this callback URL . 
 
-### Troubleshooting
+#### Troubleshooting
 
 * If you receive the following error `org.scribe.exceptions.OAuthException: Cannot send unauthenticated requests for TwitterApi client. Please attach an access token!` then check the following:
  * Is your intent-filter with `<data>` attached to the `LoginActivity`? If not, make sure that the `LoginActivity` receives the request after OAuth authorization.
