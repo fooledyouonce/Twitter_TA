@@ -21,6 +21,8 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import org.json.JSONException;
 import org.parceler.Parcels;
 
+import java.util.Locale;
+
 import okhttp3.Headers;
 
 public class ComposeActivity extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class ComposeActivity extends AppCompatActivity {
     Button btnTweet;
     TwitterClient client;
     ActivityComposeBinding binding;
+    //TODO: reply
+    Tweet replyTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,12 @@ public class ComposeActivity extends AppCompatActivity {
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
         client = TwitterApp.getRestClient(this);
-        
+
+        if(getIntent().hasExtra("replyToTweet")) {
+            replyTo = getIntent().getParcelableExtra("replyToTweet");
+            etCompose.setText("@" + replyTo.user.screenName);
+        }
+
         //set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +64,18 @@ public class ComposeActivity extends AppCompatActivity {
                 }
                 if (tweetContent.length() > MAX_TWEET_LENGTH) {
                     Toast.makeText(ComposeActivity.this, "Your tweet must be less than 280 characters!", Toast.LENGTH_LONG).show();
+                    return;
                 }
+                //TODO: reply
+                /* if(replyTo != null) {
+                    if(tweetContent does not start with "@username ") {
+                        Toast...
+                        return
+                    }
+
+                }
+                * */
+
                 //make api call to twitter to publish tweet
                 //Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show(); //debugging
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {

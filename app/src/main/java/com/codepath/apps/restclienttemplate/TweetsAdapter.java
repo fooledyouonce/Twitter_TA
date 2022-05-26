@@ -2,14 +2,12 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +27,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         this.context = context;
         this.tweets = tweets;
     }
+
     //for each row, inflate layout
     @NonNull
     @Override
@@ -36,6 +35,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         View view = LayoutInflater.from(context).inflate(R.layout.item_tweet, parent, false);
         return new ViewHolder(view);
     }
+
     //bind values based on position of the element
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -44,21 +44,25 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         //bind tweet with view holder
         holder.bind(tweet);
     }
+
     @Override
     public int getItemCount() {
         return tweets.size();
     }
+
     //for swiperefresh
     //clear elements of recycler
     public void clear() {
         tweets.clear();
         notifyDataSetChanged();
     }
+
     //add list of items
     public void addAll(List<Tweet> tweetList) {
         tweets.addAll(tweetList);
         notifyDataSetChanged();
     }
+
     //define viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -67,6 +71,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvBody;
         TextView tvTime;
+        Tweet tweetForItem;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -86,15 +91,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     //.transform(new RoundedCornersTransformation(radius, margin))
                     .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
+            tweetForItem = tweet;
             rlTweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String screen_name = tvScreenName.toString();
-                    String body = tvBody.toString();
-                    String time = tvTime.toString();
-                    Glide.with(context).load(tweet.user.profileImageUrl)
-                            //.transform(new RoundedCornersTransformation(radius, margin))
-                            .into(ivProfileImage);
+                    String screen_name = tweetForItem.user.screenName;
+                    String body = tweetForItem.body;
+                    String time = tweetForItem.createdAt;
+                    //TODO: Pass pfp in
 
                     //Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(context, DetailActivity.class);

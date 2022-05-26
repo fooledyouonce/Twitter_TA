@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
-import com.codepath.apps.restclienttemplate.helper.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TweetsAdapter;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
+import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
+import com.codepath.apps.restclienttemplate.helper.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDao;
 import com.codepath.apps.restclienttemplate.models.TweetWithUser;
@@ -35,6 +35,8 @@ import java.util.List;
 
 import okhttp3.Headers;
 
+
+//https://github.com/sDong517/Meta_SimpleTweet
 public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
@@ -107,6 +109,7 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.addOnScrollListener(scrollListener);
         populateHomeTimeline();
     }
+
     private void loadMoreData() {
         // Send an API request to retrieve appropriate paginated data
         client.getNextPageOfTweets(new JsonHttpResponseHandler() {
@@ -131,6 +134,7 @@ public class TimelineActivity extends AppCompatActivity {
         //  --> Append the new data objects to the existing set of items inside the array of items
         //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
     }
+
     private void populateHomeTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
@@ -164,20 +168,24 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
     }
+
     //TODO: Progress bar??
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         return super.onPrepareOptionsMenu(menu);
     }
+
     public void showProgressBar() {
         // Show progress item
         miActionProgressItem.setVisible(true);
     }
+
     public void hideProgressBar() {
         // Hide progress item
         miActionProgressItem.setVisible(false);
     }
+
     //logout procedure
     //NOTE: use menu_main for both logout and compose
     //https://developer.android.com/training/appbar/actions#java
@@ -187,6 +195,7 @@ public class TimelineActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     //2. create a function to check for clicks and perform an action
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -201,6 +210,7 @@ public class TimelineActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     //3. navigate to login activity
     private void goLoginActivity() {
         //forget who's logged in
@@ -212,18 +222,22 @@ public class TimelineActivity extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
     @SuppressWarnings("deprecation")
     private void goComposeActivity() {
         Intent i = new Intent(this, ComposeActivity.class);
         startActivityForResult(i, REQUEST_CODE);
         finish();
     }
+
     @SuppressWarnings("deprecation")
+    //TODO: Store screenname for reply here
     public void goReplyComposeActivity(View view) {
         Intent i = new Intent(this, ComposeActivity.class);
         startActivityForResult(i, REQUEST_CODE);
         finish();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
