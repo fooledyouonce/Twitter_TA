@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.activity.FollowActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -26,6 +29,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     //pass in context and list of tweets
     Context context;
     List<Tweet> tweets;
+    private final int REQUEST_CODE = 20;
 
     public TweetsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
@@ -75,6 +79,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvBody;
         TextView tvTime;
+        Button btnReply;
         //Tweet tweetForItem; //---> rudimentary method
 
         public ViewHolder(@NonNull View itemView) {
@@ -84,6 +89,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvTime = itemView.findViewById(R.id.tvTime);
+            btnReply = itemView.findViewById(R.id.btnReply);
         }
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
@@ -125,7 +131,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     context.startActivity(i);
                 }
             });
-        }
 
+            btnReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, ComposeActivity.class);
+                    i.putExtra("replyToTweet", Parcels.wrap(tweet));
+                    context.startActivity(i);
+                }
+            });
+        }
     }
 }

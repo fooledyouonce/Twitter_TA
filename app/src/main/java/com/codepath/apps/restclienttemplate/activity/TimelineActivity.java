@@ -230,14 +230,6 @@ public class TimelineActivity extends AppCompatActivity {
         finish();
     }
 
-    @SuppressWarnings("deprecation")
-    //TODO: Store screenname for reply here
-    public void goReplyComposeActivity(View view) {
-        Intent i = new Intent(this, ComposeActivity.class);
-        startActivityForResult(i, REQUEST_CODE);
-        finish();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {

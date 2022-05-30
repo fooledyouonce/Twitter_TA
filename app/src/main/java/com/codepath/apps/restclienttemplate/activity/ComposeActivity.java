@@ -33,7 +33,6 @@ public class ComposeActivity extends AppCompatActivity {
     Button btnTweet;
     TwitterClient client;
     ActivityComposeBinding binding;
-    //TODO: reply
     Tweet replyTo;
 
     @Override
@@ -49,7 +48,7 @@ public class ComposeActivity extends AppCompatActivity {
         client = TwitterApp.getRestClient(this);
 
         if(getIntent().hasExtra("replyToTweet")) {
-            replyTo = getIntent().getParcelableExtra("replyToTweet");
+            replyTo = Parcels.unwrap(getIntent().getParcelableExtra("replyToTweet"));
             etCompose.setText("@" + replyTo.user.screenName);
         }
 
@@ -67,14 +66,12 @@ public class ComposeActivity extends AppCompatActivity {
                     return;
                 }
                 //TODO: reply
-                /* if(replyTo != null) {
-                    if(tweetContent does not start with "@username ") {
-                        Toast...
-                        return
+                /*if (replyTo != null) {
+                    if (tweetContent !=  "@" + replyTo.user.screenName) {
+                        Toast.makeText(ComposeActivity.this, "Include user!", Toast.LENGTH_LONG).show();
+                        return;
                     }
-
-                }
-                * */
+                }*/
 
                 //make api call to twitter to publish tweet
                 //Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show(); //debugging
