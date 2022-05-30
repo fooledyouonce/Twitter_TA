@@ -27,7 +27,7 @@ The following **optional** features are implemented:
 * [X] User sees an **indeterminate progress indicator** when any background or network task is happening
 * [X] User can **select "reply" from home timeline to respond to a tweet**
   * [ ] User that wrote the original tweet is **automatically "@" replied in compose**
-* [ ] User can tap a tweet to **open a detailed tweet view**
+* [X] User can tap a tweet to **open a detailed tweet view**
   * [ ] User can **take favorite (and unfavorite) or retweet** actions on a tweet
 * [X] User can view more tweets as they scroll with infinite pagination
 * [ ] Compose tweet functionality is built using modal overlay
