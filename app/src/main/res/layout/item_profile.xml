@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
+
+    <ImageView
+        android:id="@+id/ivProfileFollow"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvUserNameFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileFollow"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="kugelblitz" />
+
+    <TextView
+        android:id="@+id/tvScreenFollow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toEndOf="@+id/ivProfileFollow"
+        app:layout_constraintTop_toBottomOf="@+id/tvUserNameFollow"
+        tools:text="\@kugelblitz" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:layout_constraintLeft_toRightOf="@id/ivProfileFollow"
+        app:layout_constraintTop_toBottomOf="@id/tvScreenFollow"
+        app:srcCompat="@drawable/ic_vector_follow" />
+</androidx.constraintlayout.widget.ConstraintLayout>

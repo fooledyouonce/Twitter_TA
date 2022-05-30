@@ -56,7 +56,7 @@ public class DetailActivity extends AppCompatActivity {
         binding.tvBody2.setText(tweet.body);
         binding.tvTime2.setText(tweet.getFormattedTimestamp());
         Glide.with(this).load(tweet.user.profileImageUrl)
-                .transform(new RoundedCorners(50))
+                .transform(new RoundedCorners(90))
                 .into(binding.ivProfileImage2);
     }
 }
