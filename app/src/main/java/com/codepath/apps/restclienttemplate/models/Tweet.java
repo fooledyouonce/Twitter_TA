@@ -44,7 +44,7 @@ public class Tweet {
         User user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.userId = user.id;
-        tweet.fullBody = jsonObject.getString("full_text");
+        //tweet.fullBody = jsonObject.getString("full_text");
         return tweet;
     }
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {

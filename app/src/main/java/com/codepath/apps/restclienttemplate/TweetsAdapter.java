@@ -13,8 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
+import com.codepath.apps.restclienttemplate.activity.FollowActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -71,11 +75,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvBody;
         TextView tvTime;
-        Tweet tweetForItem;
+        //Tweet tweetForItem; //---> rudimentary method
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            rlTweet = itemView.findViewById(R.id.rlTweet);
+            //rlTweet = itemView.findViewById(R.id.rlTweet);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
@@ -84,27 +88,40 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
             tvBody.setText(tweet.body);
-            int radius = 30;
-            int margin = 10;
-            //TODO: Rounded pfp
             Glide.with(context).load(tweet.user.profileImageUrl)
-                    //.transform(new RoundedCornersTransformation(radius, margin))
+                    .transform(new RoundedCorners(50))
                     .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
-            tweetForItem = tweet;
-            rlTweet.setOnClickListener(new View.OnClickListener() {
+            //tweetForItem = tweet;
+            ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String screen_name = tweetForItem.user.screenName;
-                    String body = tweetForItem.body;
-                    String time = tweetForItem.createdAt;
-                    //TODO: Pass pfp in
+                    Intent i = new Intent(context, FollowActivity.class);
+                    //i.putExtra("user", Parcels.wrap(tweet.user));
+                    context.startActivity(i);
+                }
+            });
+            tvBody.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   /*
+                   rudimentary method
+                   String screen_name = tweetForItem.user.screenName;
+                   String body = tweetForItem.body;
+                   String time = tweetForItem.createdAt;
+                   */
 
                     //Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(context, DetailActivity.class);
+                    i.putExtra("tweet", Parcels.wrap(tweet));
+
+                    /*
+                    rudimentary method
                     i.putExtra("screen_name", screen_name);
                     i.putExtra("body", body);
                     i.putExtra("time", time);
+                    */
+
                     context.startActivity(i);
                 }
             });
