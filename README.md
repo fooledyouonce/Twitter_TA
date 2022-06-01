@@ -19,7 +19,7 @@ The following **required** functionality is completed:
   * [X] Newly created tweet should be manually inserted into the timeline and not rely on a full refresh
 * [X] User can **see a counter with total number of characters left for tweet** on compose tweet page
 * [X] User can **pull down to refresh tweets timeline**
-* [ ] User can **see embedded image media within a tweet** on list or detail view.
+* [X] User can **see embedded image media within a tweet** on list or detail view.
 
 The following **optional** features are implemented:
 

@@ -1,5 +1,7 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -52,9 +54,11 @@ public class Tweet {
         tweet.userId = user.id;
 
         if (!jsonObject.getJSONObject("entities").has("media")) {
+            Log.d("Tweet", "No pictures!");
             tweet.tweet_url = "none";
         }
         else {
+            Log.d("Tweet", jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url"));
             tweet.tweet_url = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
         }
         return tweet;
