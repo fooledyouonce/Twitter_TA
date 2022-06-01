@@ -29,22 +29,34 @@ public class Tweet {
     public String createdAt;
     @ColumnInfo
     public long userId;
+    @ColumnInfo
+    public String tweet_url;
     @Ignore
     public User user;
-
-    public String fullBody;
 
     public Tweet() {}
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("text");
+//TODO: embedded images and full_text
+        if(jsonObject.has("full_text")) {
+            tweet.body = jsonObject.getString("full_text");
+        }
+        else {
+            tweet.body = jsonObject.getString("text");
+        }
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.id = jsonObject.getLong("id");
         User user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.userId = user.id;
-        //tweet.fullBody = jsonObject.getString("full_text");
+
+        if (!jsonObject.getJSONObject("entities").has("media")) {
+            tweet.tweet_url = "none";
+        }
+        else {
+            tweet.tweet_url = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
+        }
         return tweet;
     }
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {

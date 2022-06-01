@@ -54,13 +54,45 @@
     <Button
         android:id="@+id/btnReply"
         android:layout_width="50dp"
-        android:layout_height="34dp"
+        android:layout_height="30dp"
         android:layout_below="@+id/tvBody"
         android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         android:clickable="false"
         android:text="reply"
-        android:textSize="8sp"
-        android:onClick="goReplyComposeActivity" />
+        android:textSize="8sp" />
+
+    <Button
+        android:id="@+id/btnRetweet"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/tvBody"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/btnReply"
+        android:clickable="false"
+        android:text="retweet"
+        android:textSize="8sp" />
+
+    <Button
+        android:id="@+id/btnLike"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_below="@+id/tvBody"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/btnRetweet"
+        android:clickable="false"
+        android:text="Like"
+        android:textSize="8sp" />
+
+    <ImageView
+        android:id="@+id/ivTweet"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="190dp"
+        android:layout_toEndOf="@+id/ivProfileImage"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </RelativeLayout>

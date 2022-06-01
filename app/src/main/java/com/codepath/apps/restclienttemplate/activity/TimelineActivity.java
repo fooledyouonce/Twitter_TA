@@ -35,7 +35,6 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-
 //https://github.com/sDong517/Meta_SimpleTweet
 public class TimelineActivity extends AppCompatActivity {
 

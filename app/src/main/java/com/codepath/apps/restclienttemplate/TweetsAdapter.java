@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,22 +75,28 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     //define viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        RelativeLayout rlTweet;
+        //RelativeLayout rlTweet;
+        ImageView ivTweet;
         ImageView ivProfileImage;
         TextView tvScreenName;
         TextView tvBody;
         TextView tvTime;
         Button btnReply;
+        Button btnRetweet;
+        Button btnLike;
         //Tweet tweetForItem; //---> rudimentary method
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             //rlTweet = itemView.findViewById(R.id.rlTweet);
+            ivTweet = itemView.findViewById(R.id.ivTweet);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvTime = itemView.findViewById(R.id.tvTime);
             btnReply = itemView.findViewById(R.id.btnReply);
+            btnRetweet = itemView.findViewById(R.id.btnRetweet);
+            btnLike = itemView.findViewById(R.id.btnLike);
         }
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
@@ -99,6 +106,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
             //tweetForItem = tweet;
+            if(tweet.tweet_url != "none") {
+                ivTweet.setVisibility(View.VISIBLE);
+                Glide.with(context).load(tweet.tweet_url).into(ivTweet);
+            }
+            else {
+                ivTweet.setVisibility(View.GONE);
+            }
             ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -138,6 +152,22 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     Intent i = new Intent(context, ComposeActivity.class);
                     i.putExtra("replyToTweet", Parcels.wrap(tweet));
                     context.startActivity(i);
+                }
+            });
+
+            btnRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, ComposeActivity.class);
+                    i.putExtra("body", Parcels.wrap(tweet));
+                    context.startActivity(i);
+                }
+            });
+//TODO: Finish like functionality
+            btnLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Tweet liked!", Toast.LENGTH_SHORT).show();
                 }
             });
         }

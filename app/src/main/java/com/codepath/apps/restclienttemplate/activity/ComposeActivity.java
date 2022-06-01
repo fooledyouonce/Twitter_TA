@@ -14,14 +14,11 @@ import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.databinding.ActivityComposeBinding;
-import com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONException;
 import org.parceler.Parcels;
-
-import java.util.Locale;
 
 import okhttp3.Headers;
 
@@ -33,7 +30,7 @@ public class ComposeActivity extends AppCompatActivity {
     Button btnTweet;
     TwitterClient client;
     ActivityComposeBinding binding;
-    Tweet replyTo;
+    Tweet tweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +45,13 @@ public class ComposeActivity extends AppCompatActivity {
         client = TwitterApp.getRestClient(this);
 
         if(getIntent().hasExtra("replyToTweet")) {
-            replyTo = Parcels.unwrap(getIntent().getParcelableExtra("replyToTweet"));
-            etCompose.setText("@" + replyTo.user.screenName);
+            tweet = Parcels.unwrap(getIntent().getParcelableExtra("replyToTweet"));
+            etCompose.setText("@" + tweet.user.screenName);
+        }
+
+        if(getIntent().hasExtra("body")) {
+            tweet = Parcels.unwrap(getIntent().getParcelableExtra("body"));
+            etCompose.setText(tweet.body);
         }
 
         //set click listener on button
