@@ -40,8 +40,9 @@ public class Tweet {
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-//TODO: embedded images and full_text
-        if(jsonObject.has("full_text")) {
+
+        //getting fulltext
+        if (jsonObject.has("full_text")) {
             tweet.body = jsonObject.getString("full_text");
         }
         else {
@@ -53,6 +54,7 @@ public class Tweet {
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.userId = user.id;
 
+        //getting media
         if (!jsonObject.getJSONObject("entities").has("media")) {
             Log.d("Tweet", "No pictures!");
             tweet.tweet_url = "none";

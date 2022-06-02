@@ -21,11 +21,15 @@ import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.activity.FollowActivity;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.parceler.Parcels;
 
 import java.util.List;
 
+import okhttp3.Headers;
+
+//TODO: Bind
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     //pass in context and list of tweets
     Context context;
@@ -106,7 +110,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
             //tweetForItem = tweet;
-            if(tweet.tweet_url != "none") {
+            if (tweet.tweet_url != "none") {
                 ivTweet.setVisibility(View.VISIBLE);
                 Glide.with(context).load(tweet.tweet_url).into(ivTweet);
             }
@@ -158,16 +162,31 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             btnRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(context, ComposeActivity.class);
-                    i.putExtra("body", Parcels.wrap(tweet));
-                    context.startActivity(i);
+                    TwitterApp.getRestClient(context).retweet(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
+                    });
                 }
             });
-//TODO: Finish like functionality
+
             btnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Tweet liked!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Tweet liked!", Toast.LENGTH_SHORT).show();
+                    TwitterApp.getRestClient(context).favorite(tweet.id, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
+                    });
                 }
             });
         }

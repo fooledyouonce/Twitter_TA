@@ -30,7 +30,7 @@ public class ComposeActivity extends AppCompatActivity {
     Button btnTweet;
     TwitterClient client;
     ActivityComposeBinding binding;
-    Tweet tweet;
+    Tweet replyToTweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +45,10 @@ public class ComposeActivity extends AppCompatActivity {
         client = TwitterApp.getRestClient(this);
 
         if(getIntent().hasExtra("replyToTweet")) {
-            tweet = Parcels.unwrap(getIntent().getParcelableExtra("replyToTweet"));
-            etCompose.setText("@" + tweet.user.screenName);
+            replyToTweet = Parcels.unwrap(getIntent().getParcelableExtra("replyToTweet"));
+            etCompose.setText("@" + replyToTweet.user.screenName);
         }
 
-        if(getIntent().hasExtra("body")) {
-            tweet = Parcels.unwrap(getIntent().getParcelableExtra("body"));
-            etCompose.setText(tweet.body);
-        }
 
         //set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
@@ -68,12 +64,35 @@ public class ComposeActivity extends AppCompatActivity {
                     return;
                 }
                 //TODO: reply
-                /*if (replyTo != null) {
-                    if (tweetContent !=  "@" + replyTo.user.screenName) {
+                if (replyToTweet != null) {
+                    if (tweetContent.substring(0, replyToTweet.user.screenName.length() + 1).equals("@" + replyToTweet.user.screenName) == false) {
                         Toast.makeText(ComposeActivity.this, "Include user!", Toast.LENGTH_LONG).show();
                         return;
                     }
-                }*/
+                    else {
+                        client.replyToTweet(tweetContent, replyToTweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                try {
+                                    Tweet tweet = Tweet.fromJson(json.jsonObject);
+                                    Log.i(TAG, "Published tweet: " + tweet);
+                                    Intent intent = new Intent();
+                                    intent.putExtra("tweet", Parcels.wrap(tweet));
+                                    //set result code and bundle data for response
+                                    setResult(RESULT_OK, intent);
+                                    //closes activity, passes data to parent
+                                    finish();
+                                } catch (JSONException e) {
+                                    Log.e(TAG, "Json exception");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
+                        });
+                    }
+                    return;
+                }
 
                 //make api call to twitter to publish tweet
                 //Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show(); //debugging
@@ -99,6 +118,7 @@ public class ComposeActivity extends AppCompatActivity {
                         Log.e(TAG, "onFailure", throwable);
                     }
                 });
+
             }
         });
     }
