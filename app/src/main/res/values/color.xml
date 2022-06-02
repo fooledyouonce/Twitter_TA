@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="twitterThemeBlue">#1DA1F2</color>
+    <color name="twitterThemeGrey">#777777</color>
+    <color name="twitterRetweet">#3faf83</color>
+    <color name="twitterLike">#ff2052</color>
+</resources>

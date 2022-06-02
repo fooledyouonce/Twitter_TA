@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -82,9 +83,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvBody;
         TextView tvTime;
-        Button btnReply;
-        Button btnRetweet;
-        Button btnLike;
+        ImageButton ibtnReply;
+        ImageButton ibtnRetweet;
+        ImageButton ibtnLike;
         ItemTweetBinding binding;
 
         public ViewHolder(@NonNull ItemTweetBinding itemBind) {
@@ -95,9 +96,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = binding.tvScreenName;
             tvBody = binding.tvBody;
             tvTime = binding.tvTime;
-            btnReply = binding.btnReply;
-            btnRetweet = binding.btnRetweet;
-            btnLike = binding.btnLike;
+            ibtnReply = binding.ibtnReply;
+            ibtnRetweet = binding.ibtnRetweet;
+            ibtnLike = binding.ibtnLike;
         }
 
         public void bind(Tweet tweet) {
@@ -131,7 +132,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }
             });
 
-            btnReply.setOnClickListener(new View.OnClickListener() {
+            ibtnReply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(context, ComposeActivity.class);
@@ -140,7 +141,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }
             });
 //TODO: Fix unretweet/unfavorite
-            btnRetweet.setOnClickListener(new View.OnClickListener() {
+            ibtnRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(tweet.isRetweeted) {
@@ -163,7 +164,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }
             });
 
-            btnLike.setOnClickListener(new View.OnClickListener() {
+            ibtnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (tweet.isFavorited) {
@@ -186,13 +187,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     }
                 }
             });
-        } //TODO: Finish
-        public void setRetweetColor() { binding.btnRetweet.setColorFilter(context.getResources().getColor(R.color.inline_action_retweet)); }
+        }
+        public void setRetweetColor() { binding.ibtnRetweet.setColorFilter(context.getResources().getColor(R.color.twitterRetweet)); }
 
-        public void setUnretweetColor() { binding.btnRetweet.setColorFilter(context.getResources().getColor(R.color.medium_gray)); }
+        public void setUnretweetColor() { binding.ibtnRetweet.setColorFilter(context.getResources().getColor(R.color.twitterThemeGrey)); }
 
-        public void setFavoritedColor() { binding. btnLike.setColorFilter(context.getResources().getColor(R.color.twitter_yellow)); }
+        public void setFavoritedColor() { binding.ibtnLike.setColorFilter(context.getResources().getColor(R.color.twitterLike)); }
 
-        public void setUnfavoritedColor() { binding.btnLike.setColorFilter(context.getResources().getColor(R.color.medium_gray)); }
+        public void setUnfavoritedColor() { binding.ibtnLike.setColorFilter(context.getResources().getColor(R.color.twitterThemeGrey)); }
     }
 }

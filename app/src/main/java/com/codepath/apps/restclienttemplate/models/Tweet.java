@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Parcel
-@Entity(foreignKeys = @ForeignKey(entity=User.class, parentColumns="id", childColumns="userId"))
+@Entity(foreignKeys = @ForeignKey(entity=User.class, parentColumns="userId", childColumns="userId"))
 public class Tweet {
 
     @PrimaryKey
