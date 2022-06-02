@@ -17,7 +17,7 @@ public class User {
 
     @ColumnInfo
     @PrimaryKey
-    public long id;
+    public long userId;
     @ColumnInfo
     public String name;
     @ColumnInfo
@@ -29,7 +29,7 @@ public class User {
 
     public static  User fromJson(JSONObject jsonObject) throws JSONException {
         User user = new User();
-        user.id = jsonObject.getLong("id");
+        user.userId = jsonObject.getLong("id");
         user.name = jsonObject.getString("name");
         user.screenName = jsonObject.getString("screen_name");
         user.profileImageUrl = jsonObject.getString("profile_image_url_https");

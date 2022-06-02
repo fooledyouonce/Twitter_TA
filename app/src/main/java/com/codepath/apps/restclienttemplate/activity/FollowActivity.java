@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -106,7 +107,8 @@ public class FollowActivity extends AppCompatActivity {
     {
         if (miActionProgressItem != null)
             miActionProgressItem.setVisible(true);
-        client.getFollowing(String.valueOf(user.id), new JsonHttpResponseHandler() {
+        client.getFollowing(String.valueOf(user.userId), new JsonHttpResponseHandler() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 JSONObject jsonObject = json.jsonObject;
@@ -125,20 +127,19 @@ public class FollowActivity extends AppCompatActivity {
                     miActionProgressItem.setVisible(false);
             }
             @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-            }
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
         });
     }
 
     public void loadFollower() {
         if (miActionProgressItem != null)
             miActionProgressItem.setVisible(true);
-        client.getFollowers(String.valueOf(user.id), new JsonHttpResponseHandler() {
+        client.getFollowers(String.valueOf(user.userId), new JsonHttpResponseHandler() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 JSONObject jsonObject = json.jsonObject;
                 try {
-                    // get user data and figure out how to parse it
                     JSONArray jsonArray = jsonObject.getJSONArray("users");
                     for (int i = 0; i<jsonArray.length(); i++) {
                         JSONObject user = jsonArray.getJSONObject(i);
@@ -152,8 +153,7 @@ public class FollowActivity extends AppCompatActivity {
                     miActionProgressItem.setVisible(false);
             }
             @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-            }
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
         });
     }
 }

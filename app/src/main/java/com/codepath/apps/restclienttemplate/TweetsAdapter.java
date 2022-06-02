@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,12 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,16 +18,17 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.activity.FollowActivity;
+import com.codepath.apps.restclienttemplate.databinding.ItemTweetBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.parceler.Parcels;
 
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.Headers;
 
-//TODO: Bind
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     //pass in context and list of tweets
     Context context;
@@ -45,16 +44,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_tweet, parent, false);
-        return new ViewHolder(view);
+        ItemTweetBinding binding = ItemTweetBinding.inflate(LayoutInflater.from(context),parent,false);
+        return new ViewHolder(binding);
     }
 
     //bind values based on position of the element
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //get data at position
         Tweet tweet = tweets.get(position);
-        //bind tweet with view holder
         holder.bind(tweet);
     }
 
@@ -63,14 +60,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         return tweets.size();
     }
 
-    //for swiperefresh
-    //clear elements of recycler
+    //swiperefresh - clear elements of recycler
+    @SuppressLint("NotifyDataSetChanged")
     public void clear() {
         tweets.clear();
         notifyDataSetChanged();
     }
 
-    //add list of items
+    //add list of tweets
+    @SuppressLint("NotifyDataSetChanged")
     public void addAll(List<Tweet> tweetList) {
         tweets.addAll(tweetList);
         notifyDataSetChanged();
@@ -79,7 +77,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     //define viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        //RelativeLayout rlTweet;
         ImageView ivTweet;
         ImageView ivProfileImage;
         TextView tvScreenName;
@@ -88,20 +85,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         Button btnReply;
         Button btnRetweet;
         Button btnLike;
-        //Tweet tweetForItem; //---> rudimentary method
+        ItemTweetBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            //rlTweet = itemView.findViewById(R.id.rlTweet);
-            ivTweet = itemView.findViewById(R.id.ivTweet);
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvScreenName = itemView.findViewById(R.id.tvScreenName);
-            tvBody = itemView.findViewById(R.id.tvBody);
-            tvTime = itemView.findViewById(R.id.tvTime);
-            btnReply = itemView.findViewById(R.id.btnReply);
-            btnRetweet = itemView.findViewById(R.id.btnRetweet);
-            btnLike = itemView.findViewById(R.id.btnLike);
+        public ViewHolder(@NonNull ItemTweetBinding itemBind) {
+            super(itemBind.getRoot());
+            binding = itemBind;
+            ivTweet = binding.ivTweet;
+            ivProfileImage = binding.ivProfileImage;
+            tvScreenName = binding.tvScreenName;
+            tvBody = binding.tvBody;
+            tvTime = binding.tvTime;
+            btnReply = binding.btnReply;
+            btnRetweet = binding.btnRetweet;
+            btnLike = binding.btnLike;
         }
+
         public void bind(Tweet tweet) {
             tvScreenName.setText(tweet.user.screenName);
             tvBody.setText(tweet.body);
@@ -109,14 +107,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     .transform(new RoundedCorners(50))
                     .into(ivProfileImage);
             tvTime.setText(tweet.getFormattedTimestamp());
-            //tweetForItem = tweet;
-            if (tweet.tweet_url != "none") {
+
+            if (!Objects.equals(tweet.pic_url, "none")) {
                 ivTweet.setVisibility(View.VISIBLE);
-                Glide.with(context).load(tweet.tweet_url).into(ivTweet);
+                Glide.with(context).load(tweet.pic_url).into(ivTweet);
             }
-            else {
-                ivTweet.setVisibility(View.GONE);
-            }
+            else { ivTweet.setVisibility(View.GONE); }
             ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -125,27 +121,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     context.startActivity(i);
                 }
             });
+
             tvBody.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   /*
-                   rudimentary method
-                   String screen_name = tweetForItem.user.screenName;
-                   String body = tweetForItem.body;
-                   String time = tweetForItem.createdAt;
-                   */
-
-                    //Toast.makeText(context, "clicked!", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(context, DetailActivity.class);
                     i.putExtra("tweet", Parcels.wrap(tweet));
-
-                    /*
-                    rudimentary method
-                    i.putExtra("screen_name", screen_name);
-                    i.putExtra("body", body);
-                    i.putExtra("time", time);
-                    */
-
                     context.startActivity(i);
                 }
             });
@@ -158,37 +139,60 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     context.startActivity(i);
                 }
             });
-
+//TODO: Fix unretweet/unfavorite
             btnRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    TwitterApp.getRestClient(context).retweet(tweet.id, new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Headers headers, JSON json) {
-
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
-                    });
+                    if(tweet.isRetweeted) {
+                        setUnretweetColor();
+                        TwitterApp.getRestClient(context).unretweet(tweet.tweetId, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) { tweet.isRetweeted = false; }
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
+                        });
+                    } else {
+                        setRetweetColor();
+                        TwitterApp.getRestClient(context).retweet(tweet.tweetId, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) { tweet.isRetweeted = true; }
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
+                        });
+                    }
                 }
             });
 
             btnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //Toast.makeText(context, "Tweet liked!", Toast.LENGTH_SHORT).show();
-                    TwitterApp.getRestClient(context).favorite(tweet.id, new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Headers headers, JSON json) {
-
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
-                    });
+                    if (tweet.isFavorited) {
+                        setUnfavoritedColor();
+                        TwitterApp.getRestClient(context).unfavorite(tweet.tweetId, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) { tweet.isFavorited = false; }
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
+                        });
+                    } else {
+                        setFavoritedColor();
+                        TwitterApp.getRestClient(context).favorite(tweet.tweetId, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) { tweet.isFavorited = true; }
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            }
+                        });
+                    }
                 }
             });
-        }
+        } //TODO: Finish
+        public void setRetweetColor() { binding.btnRetweet.setColorFilter(context.getResources().getColor(R.color.inline_action_retweet)); }
+
+        public void setUnretweetColor() { binding.btnRetweet.setColorFilter(context.getResources().getColor(R.color.medium_gray)); }
+
+        public void setFavoritedColor() { binding. btnLike.setColorFilter(context.getResources().getColor(R.color.twitter_yellow)); }
+
+        public void setUnfavoritedColor() { binding.btnLike.setColorFilter(context.getResources().getColor(R.color.medium_gray)); }
     }
 }

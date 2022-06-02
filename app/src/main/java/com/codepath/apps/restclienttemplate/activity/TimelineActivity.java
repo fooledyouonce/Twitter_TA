@@ -127,7 +127,7 @@ public class TimelineActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "onFailure for loadMoreData()", throwable);
             }
-        }, tweets.get(tweets.size() - 1).id);
+        }, tweets.get(tweets.size() - 1).tweetId);
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items

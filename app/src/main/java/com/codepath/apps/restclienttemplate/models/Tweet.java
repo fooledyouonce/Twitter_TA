@@ -24,15 +24,19 @@ public class Tweet {
 
     @PrimaryKey
     @ColumnInfo
-    public long id;
-    @ColumnInfo
-    public String body;
-    @ColumnInfo
-    public String createdAt;
+    public long tweetId;
     @ColumnInfo
     public long userId;
     @ColumnInfo
-    public String tweet_url;
+    public String body;
+    @ColumnInfo
+    public String pic_url;
+    @ColumnInfo
+    public String createdAt;
+    @ColumnInfo
+    public boolean isRetweeted;
+    @ColumnInfo
+    public boolean isFavorited;
     @Ignore
     public User user;
 
@@ -41,30 +45,29 @@ public class Tweet {
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
 
-        //getting fulltext
-        if (jsonObject.has("full_text")) {
-            tweet.body = jsonObject.getString("full_text");
-        }
-        else {
-            tweet.body = jsonObject.getString("text");
-        }
+        //setting tweet body
+        if (jsonObject.has("full_text")) { tweet.body = jsonObject.getString("full_text"); }
+        else { tweet.body = jsonObject.getString("text"); }
         tweet.createdAt = jsonObject.getString("created_at");
-        tweet.id = jsonObject.getLong("id");
+        tweet.tweetId = jsonObject.getLong("id");
         User user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-        tweet.userId = user.id;
+        tweet.userId = user.userId;
+        tweet.isRetweeted = jsonObject.getBoolean("retweeted");
+        tweet.isFavorited =  jsonObject.getBoolean("favorited");
 
         //getting media
         if (!jsonObject.getJSONObject("entities").has("media")) {
             Log.d("Tweet", "No pictures!");
-            tweet.tweet_url = "none";
+            tweet.pic_url = "none";
         }
         else {
             Log.d("Tweet", jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url"));
-            tweet.tweet_url = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
+            tweet.pic_url = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
         }
         return tweet;
     }
+
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {

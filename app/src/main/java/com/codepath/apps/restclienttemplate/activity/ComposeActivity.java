@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,10 +33,10 @@ public class ComposeActivity extends AppCompatActivity {
     ActivityComposeBinding binding;
     Tweet replyToTweet;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_compose);
         binding = ActivityComposeBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -49,8 +50,6 @@ public class ComposeActivity extends AppCompatActivity {
             etCompose.setText("@" + replyToTweet.user.screenName);
         }
 
-
-        //set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,14 +62,14 @@ public class ComposeActivity extends AppCompatActivity {
                     Toast.makeText(ComposeActivity.this, "Your tweet must be less than 280 characters!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                //TODO: reply
+
                 if (replyToTweet != null) {
-                    if (tweetContent.substring(0, replyToTweet.user.screenName.length() + 1).equals("@" + replyToTweet.user.screenName) == false) {
+                    if (!tweetContent.substring(0, replyToTweet.user.screenName.length() + 1).equals("@" + replyToTweet.user.screenName)) {
                         Toast.makeText(ComposeActivity.this, "Include user!", Toast.LENGTH_LONG).show();
                         return;
                     }
                     else {
-                        client.replyToTweet(tweetContent, replyToTweet.id, new JsonHttpResponseHandler() {
+                        client.replyToTweet(tweetContent, replyToTweet.tweetId, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
                                 try {
@@ -118,7 +117,6 @@ public class ComposeActivity extends AppCompatActivity {
                         Log.e(TAG, "onFailure", throwable);
                     }
                 });
-
             }
         });
     }

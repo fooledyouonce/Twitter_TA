@@ -22,6 +22,7 @@ import com.github.scribejava.core.builder.api.BaseApi;
  * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
+
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance();
 	public static final String REST_URL = "https://api.twitter.com/1.1"; //change this, base API URL
@@ -80,17 +81,17 @@ public class TwitterClient extends OAuthBaseClient {
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getFollowers(String userid, JsonHttpResponseHandler handler) {
+	public void getFollowers(String userId, JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("followers/list.json");
 		RequestParams params = new RequestParams();
-		params.put("user_id", userid);
+		params.put("user_id", userId);
 		client.get(apiUrl, params, handler);
 	}
 
-	public void getFollowing(String userid, JsonHttpResponseHandler handler) {
+	public void getFollowing(String userId, JsonHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("friends/list.json");
 		RequestParams params = new RequestParams();
-		params.put("user_id", userid);
+		params.put("user_id", userId);
 		client.get(apiUrl, params, handler);
 	}
 
@@ -121,5 +122,4 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("id", tweetId);
 		client.post(apiUrl, params, "", handler);
 	}
-
 }

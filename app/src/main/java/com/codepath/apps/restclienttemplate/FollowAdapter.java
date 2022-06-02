@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -34,9 +35,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        holder.bind(userList.get(position));
-    }
+    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) { holder.bind(userList.get(position)); }
 
     @Override
     public int getItemCount() { return userList.size(); }
@@ -47,6 +46,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
             super(Binding.getRoot());
             binding = Binding;
         }
+        @SuppressLint("SetTextI18n")
         public void bind(User user) {
             binding.tvUserNameFollow.setText(user.name);
             binding.tvScreenFollow.setText("@" + user.screenName);
