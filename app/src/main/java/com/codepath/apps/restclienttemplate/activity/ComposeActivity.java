@@ -41,8 +41,8 @@ public class ComposeActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         
-        etCompose = findViewById(R.id.etCompose);
-        btnTweet = findViewById(R.id.btnTweet);
+        etCompose = binding.etCompose;
+        btnTweet = binding.btnTweet;
         client = TwitterApp.getRestClient(this);
 
         if(getIntent().hasExtra("replyToTweet")) {
