@@ -140,7 +140,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     context.startActivity(i);
                 }
             });
-//TODO: Fix unretweet/unfavorite
+
             ibtnRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -188,6 +188,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 }
             });
         }
+
         public void setRetweetColor() { binding.ibtnRetweet.setColorFilter(context.getResources().getColor(R.color.twitterRetweet)); }
 
         public void setUnretweetColor() { binding.ibtnRetweet.setColorFilter(context.getResources().getColor(R.color.twitterThemeGrey)); }
