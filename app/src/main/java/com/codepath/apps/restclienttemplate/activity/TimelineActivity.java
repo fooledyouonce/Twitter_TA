@@ -37,7 +37,7 @@ import java.util.List;
 import okhttp3.Headers;
 
 //https://github.com/sDong517/Meta_SimpleTweet
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements FragmentComposeListener{
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
@@ -80,7 +80,7 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets = findViewById(R.id.rvTweets);
         //init list of tweets and adapter
         tweets = new ArrayList<>();
-        adapter = new TweetsAdapter(this, tweets);
+        adapter = new TweetsAdapter(this, this, tweets);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //recycler view setup; layout manager and adapter
         rvTweets.setLayoutManager(layoutManager);
@@ -229,6 +229,12 @@ public class TimelineActivity extends AppCompatActivity {
         finish();
     }
 
+    public void goComposeFragment(Tweet replyToTweet) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentCompose composeFragment = FragmentCompose.newInstance(replyToTweet);
+        composeFragment.show(fm, "activity_compose");
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
@@ -242,5 +248,17 @@ public class TimelineActivity extends AppCompatActivity {
             rvTweets.smoothScrollToPosition(0);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onFinishComposingTweet(Tweet tweet) {
+        // new tweet is coming from Compose Frgmen
+
+        //send that new tweet to the recyclercview on top
+
+        tweets.add(0, tweet);
+        //update adapter
+        adapter.notifyItemInserted(0);
+        rvTweets.smoothScrollToPosition(0);
     }
 }

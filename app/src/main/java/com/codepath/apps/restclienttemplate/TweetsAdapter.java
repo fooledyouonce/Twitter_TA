@@ -22,6 +22,7 @@ import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.activity.FollowActivity;
 import com.codepath.apps.restclienttemplate.activity.FragmentCompose;
+import com.codepath.apps.restclienttemplate.activity.TimelineActivity;
 import com.codepath.apps.restclienttemplate.databinding.ItemTweetBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -37,11 +38,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     private static final String TAG = "TweetsAdapter";
     //pass in context and list of tweets
     Context context;
+    TimelineActivity activity;
     List<Tweet> tweets;
-    private final int REQUEST_CODE = 20;
+    //private final int REQUEST_CODE = 20;
 
-    public TweetsAdapter(Context context, List<Tweet> tweets) {
+    public TweetsAdapter(Context context, TimelineActivity activity, List<Tweet> tweets) {
         this.context = context;
+        this.activity = activity;
         this.tweets = tweets;
     }
 
@@ -135,11 +138,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     context.startActivity(i);
                 }
             });
-
+            //this is the source, goes to composefragment
             ibtnReply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showComposeDialog(tweet.user.screenName);
+                    showReplyDialog(tweet);
                 }
             });
 
@@ -200,10 +203,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void setUnfavoritedColor() { binding.ibtnLike.setColorFilter(context.getResources().getColor(R.color.twitterThemeGrey)); }
     }
 
-    public void showComposeDialog(String username) {
+    public void showReplyDialog(Tweet replyToTweet) {
         Log.d(TAG, "FRAGMENT!!");
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentCompose composeFragment = FragmentCompose.newInstance(username);
-        composeFragment.show(fm, "activity_compose");
+        // tell activity to open the Compose dialog fragment
+        activity.goComposeFragment(replyToTweet);
     }
 }
