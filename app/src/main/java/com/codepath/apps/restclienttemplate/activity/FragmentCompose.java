@@ -54,11 +54,11 @@ public class FragmentCompose extends DialogFragment {
         // Use `newInstance` instead as shown below
     }
 
-    public static FragmentCompose newInstance(String username) {
+    public static FragmentCompose newInstance(Tweet replyToTweet) {
         Log.d(TAG, "FRAGMENT!!");
         FragmentCompose frag = new FragmentCompose();
         Bundle args = new Bundle();
-        args.putString("username", username);
+        args.putParcelable("tweet", Parcels.wrap(replyToTweet));
         frag.setArguments(args);
         return frag;
     }
@@ -83,7 +83,9 @@ public class FragmentCompose extends DialogFragment {
         btnTweet = (Button) view.findViewById(R.id.btnTweet);
         client = TwitterApp.getRestClient(getContext());
 
-        etCompose.setText(getArguments().getString("username"));
+        replyToTweet = Parcels.unwrap(getArguments().getParcelable("tweet"));
+
+        etCompose.setText("@" + replyToTweet.user.screenName);
 
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +102,7 @@ public class FragmentCompose extends DialogFragment {
                 if (replyToTweet != null) {
                     if (!tweetContent.substring(0, replyToTweet.user.screenName.length() + 1).equals("@" + replyToTweet.user.screenName)) {
                         Toast.makeText(getActivity(), "Include user!", Toast.LENGTH_LONG).show();
+                        etCompose.requestFocus();
                         return;
                     }
                     else {
@@ -109,12 +112,8 @@ public class FragmentCompose extends DialogFragment {
                                 try {
                                     Tweet tweet = Tweet.fromJson(json.jsonObject);
                                     Log.i(TAG, "Published tweet: " + tweet);
-                                    Intent intent = new Intent();
-                                    intent.putExtra("tweet", Parcels.wrap(tweet));
-                                    //set result code and bundle data for response
-                                    setResult(RESULT_OK, intent);
-                                    //closes activity, passes data to parent
-                                    finish();
+                                    ((FragmentComposeListener) getActivity()).onFinishComposingTweet(tweet);
+                                    dismiss();
                                 } catch (JSONException e) {
                                     Log.e(TAG, "Json exception");
                                 }
@@ -124,7 +123,8 @@ public class FragmentCompose extends DialogFragment {
                             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
                         });
                     }
-                    etCompose.requestFocus();
+                    return;
+
                 }
 
                 //make api call to twitter to publish tweet
@@ -135,12 +135,7 @@ public class FragmentCompose extends DialogFragment {
                         try {
                             Tweet tweet = Tweet.fromJson(json.jsonObject);
                             Log.i(TAG, "Published tweet: " + tweet);
-                            Intent intent = new Intent();
-                            intent.putExtra("tweet", Parcels.wrap(tweet));
-                            //set result code and bundle data for response
-                            setResult(RESULT_OK, intent);
-                            //closes activity, passes data to parent
-                            finish();
+                            dismiss();
                         } catch (JSONException e) {
                             Log.e(TAG, "Json exception");
                         }
