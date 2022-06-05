@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +21,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.activity.FollowActivity;
+import com.codepath.apps.restclienttemplate.activity.FragmentCompose;
 import com.codepath.apps.restclienttemplate.databinding.ItemTweetBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -31,6 +34,7 @@ import java.util.Objects;
 import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
+    private static final String TAG = "TweetsAdapter";
     //pass in context and list of tweets
     Context context;
     List<Tweet> tweets;
@@ -135,9 +139,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibtnReply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(context, ComposeActivity.class);
-                    i.putExtra("replyToTweet", Parcels.wrap(tweet));
-                    context.startActivity(i);
+                    showComposeDialog(tweet.user.screenName);
                 }
             });
 
@@ -196,5 +198,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void setFavoritedColor() { binding.ibtnLike.setColorFilter(context.getResources().getColor(R.color.twitterLike)); }
 
         public void setUnfavoritedColor() { binding.ibtnLike.setColorFilter(context.getResources().getColor(R.color.twitterThemeGrey)); }
+    }
+
+    public void showComposeDialog(String username) {
+        Log.d(TAG, "FRAGMENT!!");
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentCompose composeFragment = FragmentCompose.newInstance(username);
+        composeFragment.show(fm, "activity_compose");
     }
 }

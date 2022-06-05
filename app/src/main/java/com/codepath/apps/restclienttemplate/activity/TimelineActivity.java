@@ -10,6 +10,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -48,13 +49,12 @@ public class TimelineActivity extends AppCompatActivity {
     SwipeRefreshLayout swipeContainer;
     EndlessRecyclerViewScrollListener scrollListener;
     MenuItem miActionProgressItem;
-    private ActivityTimelineBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // setContentView(R.layout.activity_timeline);
-        binding = ActivityTimelineBinding.inflate(getLayoutInflater());
+        com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding binding = ActivityTimelineBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
@@ -203,7 +203,7 @@ public class TimelineActivity extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.actionCompose) {
-            goComposeActivity();;
+            goComposeActivity();
             //Toast.makeText(this, "Compose clicked!", Toast.LENGTH_SHORT).show();
             return true;
         }

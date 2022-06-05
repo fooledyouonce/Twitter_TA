@@ -1,5 +1,6 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.restclienttemplate.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -7,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,59 +18,69 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TwitterApp;
+import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.databinding.ActivityComposeBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
+import org.parceler.Parcels;
 
 import java.util.Objects;
 
 import okhttp3.Headers;
 
-//TODO: Edit TimeActivity to work with ComposeFragment
-public class ComposeFragment extends DialogFragment implements TextView.OnEditorActionListener {
+public class FragmentCompose extends DialogFragment {
 
     public static final String TAG = "ComposeActivity";
     public static final int MAX_TWEET_LENGTH = 280;
     EditText etCompose;
     Button btnTweet;
     TwitterClient client;
-    ActivityComposeBinding binding;
+    //ActivityComposeBinding binding;
     Tweet replyToTweet;
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) { return false; }
+   // @Override
+   // public boolean onEditorAction(TextView v, int actionId, KeyEvent event) { return false; }
 
-    public interface TweetListener { void onTweetButton(Tweet tweet); }
+  //  public interface TweetListener { void onTweetButton(Tweet tweet); }
 
-    public ComposeFragment() {
+    public FragmentCompose() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
     }
 
-    public static ComposeFragment newInstance(String username) {
-        ComposeFragment frag = new ComposeFragment();
+    public static FragmentCompose newInstance(String username) {
+        Log.d(TAG, "FRAGMENT!!");
+        FragmentCompose frag = new FragmentCompose();
         Bundle args = new Bundle();
         args.putString("username", username);
         frag.setArguments(args);
         return frag;
     }
 
+   // @Override
+    //public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    //    binding = ActivityComposeBinding.inflate(getLayoutInflater());
+   //     return binding.getRoot();
+   // }
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = ActivityComposeBinding.inflate(getLayoutInflater());
-        return binding.getRoot();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_compose_activity, container);
     }
 
     @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etCompose = binding.etCompose;
-        btnTweet = binding.btnTweet;
+        etCompose = (EditText) view.findViewById(R.id.etCompose);
+        btnTweet = (Button) view.findViewById(R.id.btnTweet);
         client = TwitterApp.getRestClient(getContext());
 
         etCompose.setText(getArguments().getString("username"));
@@ -96,10 +108,13 @@ public class ComposeFragment extends DialogFragment implements TextView.OnEditor
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
                                 try {
                                     Tweet tweet = Tweet.fromJson(json.jsonObject);
-                                    TweetListener listener = (TweetListener) getActivity();
-                                    assert listener != null;
-                                    listener.onTweetButton(tweet);
-                                    dismiss();
+                                    Log.i(TAG, "Published tweet: " + tweet);
+                                    Intent intent = new Intent();
+                                    intent.putExtra("tweet", Parcels.wrap(tweet));
+                                    //set result code and bundle data for response
+                                    setResult(RESULT_OK, intent);
+                                    //closes activity, passes data to parent
+                                    finish();
                                 } catch (JSONException e) {
                                     Log.e(TAG, "Json exception");
                                 }
@@ -119,9 +134,13 @@ public class ComposeFragment extends DialogFragment implements TextView.OnEditor
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
                         try {
                             Tweet tweet = Tweet.fromJson(json.jsonObject);
-                            TweetListener listener = (TweetListener) getActivity();
-                            listener.onTweetButton(tweet);
-                            dismiss();
+                            Log.i(TAG, "Published tweet: " + tweet);
+                            Intent intent = new Intent();
+                            intent.putExtra("tweet", Parcels.wrap(tweet));
+                            //set result code and bundle data for response
+                            setResult(RESULT_OK, intent);
+                            //closes activity, passes data to parent
+                            finish();
                         } catch (JSONException e) {
                             Log.e(TAG, "Json exception");
                         }
@@ -131,6 +150,9 @@ public class ComposeFragment extends DialogFragment implements TextView.OnEditor
                 });
             }
         });
+        etCompose.requestFocus();
+        getDialog().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override
@@ -140,6 +162,5 @@ public class ComposeFragment extends DialogFragment implements TextView.OnEditor
         int height = metrics.heightPixels;
         Objects.requireNonNull(getDialog()).getWindow().setLayout((6 * width)/7, (3 * height)/5);
         super.onStart();
-
     }
 }
