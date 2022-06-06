@@ -85,7 +85,9 @@ public class FragmentCompose extends DialogFragment {
 
         replyToTweet = Parcels.unwrap(getArguments().getParcelable("tweet"));
 
-        etCompose.setText("@" + replyToTweet.user.screenName);
+        if(replyToTweet != null) {
+            etCompose.setText("@" + replyToTweet.user.screenName);
+        }
 
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,9 +112,11 @@ public class FragmentCompose extends DialogFragment {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
                                 try {
-                                    Tweet tweet = Tweet.fromJson(json.jsonObject);
-                                    Log.i(TAG, "Published tweet: " + tweet);
-                                    ((FragmentComposeListener) getActivity()).onFinishComposingTweet(tweet);
+                                    Tweet replyTweet = Tweet.fromJson(json.jsonObject);
+                                    Log.i(TAG, "Published tweet: " + replyTweet);
+                                    //why a listener? added layer of security. this way fragment has access to exactly one method and cannot mess up timeline activity
+                                    FragmentComposeListener activity = ((FragmentComposeListener) getActivity());
+                                    activity.onFinishComposingTweet(replyTweet);
                                     dismiss();
                                 } catch (JSONException e) {
                                     Log.e(TAG, "Json exception");
@@ -133,8 +137,11 @@ public class FragmentCompose extends DialogFragment {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
                         try {
-                            Tweet tweet = Tweet.fromJson(json.jsonObject);
-                            Log.i(TAG, "Published tweet: " + tweet);
+                            Tweet newTweet = Tweet.fromJson(json.jsonObject);
+                            Log.i(TAG, "Published tweet: " + newTweet);
+                            //why a listener? added layer of security. this way fragment has access to exactly one method and cannot mess up timeline activity
+                            FragmentComposeListener activity = ((FragmentComposeListener) getActivity());
+                            activity.onFinishComposingTweet(newTweet);
                             dismiss();
                         } catch (JSONException e) {
                             Log.e(TAG, "Json exception");
