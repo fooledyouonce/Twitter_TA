@@ -7,5 +7,7 @@
     <string name="intent_host">cprest</string>
     <string name="what_s_happening">What\'s happening?</string>
     <string name="tweet">Tweet</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
 
 </resources>

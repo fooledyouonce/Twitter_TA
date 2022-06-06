@@ -18,9 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder> {
-
     Context context;
     List<User> userList;
+
     public FollowAdapter(Context activity, List<User> users) {
         context = activity;
         userList = users;
@@ -46,6 +46,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
             super(Binding.getRoot());
             binding = Binding;
         }
+
         @SuppressLint("SetTextI18n")
         public void bind(User user) {
             binding.tvUserNameFollow.setText(user.name);

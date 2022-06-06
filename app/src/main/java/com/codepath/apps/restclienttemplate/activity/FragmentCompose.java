@@ -40,46 +40,29 @@ public class FragmentCompose extends DialogFragment {
     EditText etCompose;
     Button btnTweet;
     TwitterClient client;
-    //ActivityComposeBinding binding;
     Tweet replyToTweet;
 
-   // @Override
-   // public boolean onEditorAction(TextView v, int actionId, KeyEvent event) { return false; }
-
-  //  public interface TweetListener { void onTweetButton(Tweet tweet); }
-
-    public FragmentCompose() {
-        // Empty constructor is required for DialogFragment
-        // Make sure not to add arguments to the constructor
-        // Use `newInstance` instead as shown below
-    }
+    public FragmentCompose() {}
 
     public static FragmentCompose newInstance(Tweet replyToTweet) {
-        Log.d(TAG, "FRAGMENT!!");
-        FragmentCompose frag = new FragmentCompose();
+        Log.d(TAG, "Accessed fragment");
+        FragmentCompose frag = new FragmentCompose(); //DEBUG
         Bundle args = new Bundle();
         args.putParcelable("tweet", Parcels.wrap(replyToTweet));
         frag.setArguments(args);
         return frag;
     }
 
-   // @Override
-    //public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    //    binding = ActivityComposeBinding.inflate(getLayoutInflater());
-   //     return binding.getRoot();
-   // }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_compose_activity, container);
+        return inflater.inflate(R.layout.fragment_compose_activity, container); //DEBUG
     }
 
     @Override
     public void onViewCreated(View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        etCompose = (EditText) view.findViewById(R.id.etCompose);
+        etCompose = (EditText) view.findViewById(R.id.etCompose); //DEBUG
         btnTweet = (Button) view.findViewById(R.id.btnTweet);
         client = TwitterApp.getRestClient(getContext());
 
@@ -101,20 +84,20 @@ public class FragmentCompose extends DialogFragment {
                     Toast.makeText(getActivity(), "Your tweet must be less than 280 characters!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (replyToTweet != null) {
-                    if (!tweetContent.substring(0, replyToTweet.user.screenName.length() + 1).equals("@" + replyToTweet.user.screenName)) {
-                        Toast.makeText(getActivity(), "Include user!", Toast.LENGTH_LONG).show();
+                if (replyToTweet != null) { //DEBUG
+                    if (!tweetContent.substring(0, replyToTweet.user.screenName.length() + 1).equals("@" + replyToTweet.user.screenName)) { //DEBUG
+                        Toast.makeText(getActivity(), "Include user!", Toast.LENGTH_LONG).show(); //DEBUG
                         etCompose.requestFocus();
                         return;
                     }
                     else {
-                        client.replyToTweet(tweetContent, replyToTweet.tweetId, new JsonHttpResponseHandler() {
+                        client.replyToTweet(tweetContent, replyToTweet.tweetId, new JsonHttpResponseHandler() { //DEBUG
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
                                 try {
                                     Tweet replyTweet = Tweet.fromJson(json.jsonObject);
                                     Log.i(TAG, "Published tweet: " + replyTweet);
-                                    //why a listener? added layer of security. this way fragment has access to exactly one method and cannot mess up timeline activity
+                                    //***Why a listener? added layer of security. This way fragment has access to exactly one method and cannot mess up TimelineActivity
                                     FragmentComposeListener activity = ((FragmentComposeListener) getActivity());
                                     activity.onFinishComposingTweet(replyTweet);
                                     dismiss();
@@ -131,15 +114,14 @@ public class FragmentCompose extends DialogFragment {
 
                 }
 
-                //make api call to twitter to publish tweet
-                //Toast.makeText(ComposeActivity.this, tweetContent, Toast.LENGTH_LONG).show(); //debugging
+                //Make api call to twitter to publish tweet
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
                         try {
                             Tweet newTweet = Tweet.fromJson(json.jsonObject);
                             Log.i(TAG, "Published tweet: " + newTweet);
-                            //why a listener? added layer of security. this way fragment has access to exactly one method and cannot mess up timeline activity
+                            //***Why a listener? added layer of security. This way fragment has access to exactly one method and cannot mess up TimelineActivity
                             FragmentComposeListener activity = ((FragmentComposeListener) getActivity());
                             activity.onFinishComposingTweet(newTweet);
                             dismiss();

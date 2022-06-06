@@ -65,12 +65,12 @@ public class FollowActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userList.clear();
-                if (binding.Switch.getText().toString() == "Following") {
-                    binding.Switch.setText("Followers");
+                if (binding.Switch.getText().toString().equals("Following")) {
+                    binding.Switch.setText(R.string.followers);
                     loadFollower();
                 }
                 else {
-                    binding.Switch.setText("Following");
+                    binding.Switch.setText(R.string.following);
                     loadFollowing();
                 }
             }
@@ -79,15 +79,11 @@ public class FollowActivity extends AppCompatActivity {
         scrollableLayout.setCanScrollVerticallyDelegate(new CanScrollVerticallyDelegate() {
             @Override
             public boolean canScrollVertically(int direction) {
-                // Obtain a View that is a scroll container (RecyclerView, ListView, ScrollView, WebView, etc)
-                // and call its `canScrollVertically(int) method.
-                // Please note, that if `ViewPager is used, currently displayed View must be obtained
-                // because `ViewPager` doesn't delegate `canScrollVertically` method calls to it's children
                 final View view = rvFollow;
                 return view.canScrollVertically(direction);
             }
         });
-        binding.Switch.setText("Following");
+        binding.Switch.setText(R.string.following);
         loadFollowing();
     }
 
@@ -113,7 +109,6 @@ public class FollowActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 JSONObject jsonObject = json.jsonObject;
                 try {
-                    // get user data and figure out how to parse it
                     JSONArray jsonArray = jsonObject.getJSONArray("users");
                     for (int i = 0; i<jsonArray.length(); i++) {
                         JSONObject user = jsonArray.getJSONObject(i);

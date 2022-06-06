@@ -20,7 +20,6 @@ import org.parceler.Parcels;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-
     Tweet tweet;
     ActivityDetailBinding binding;
 

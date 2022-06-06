@@ -36,19 +36,16 @@ import okhttp3.Headers;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     private static final String TAG = "TweetsAdapter";
-    //pass in context and list of tweets
     Context context;
     TimelineActivity activity;
     List<Tweet> tweets;
-    //private final int REQUEST_CODE = 20;
 
     public TweetsAdapter(Context context, TimelineActivity activity, List<Tweet> tweets) {
-        this.context = context;
+        this.context = context; //DEBUG
         this.activity = activity;
         this.tweets = tweets;
     }
 
-    //for each row, inflate layout
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -56,7 +53,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         return new ViewHolder(binding);
     }
 
-    //bind values based on position of the element
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Tweet tweet = tweets.get(position);
@@ -68,23 +64,19 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         return tweets.size();
     }
 
-    //swiperefresh - clear elements of recycler
     @SuppressLint("NotifyDataSetChanged")
     public void clear() {
         tweets.clear();
         notifyDataSetChanged();
     }
 
-    //add list of tweets
     @SuppressLint("NotifyDataSetChanged")
     public void addAll(List<Tweet> tweetList) {
         tweets.addAll(tweetList);
         notifyDataSetChanged();
     }
 
-    //define viewholder
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         ImageView ivTweet;
         ImageView ivProfileImage;
         TextView tvScreenName;
@@ -138,12 +130,13 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     context.startActivity(i);
                 }
             });
-            //this is the source, goes to composefragment
+
+            //This is the source, goes to FragmentCompose
             ibtnReply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     showReplyDialog(tweet);
-                }
+                } //DEBUG
             });
 
             ibtnRetweet.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +173,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                             @Override
                             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {}
                         });
+
                     } else {
                         setFavoritedColor();
                         TwitterApp.getRestClient(context).favorite(tweet.tweetId, new JsonHttpResponseHandler() {
@@ -204,8 +198,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     public void showReplyDialog(Tweet replyToTweet) {
-        Log.d(TAG, "FRAGMENT!!");
-        // tell activity to open the Compose dialog fragment
-        activity.goComposeFragment(replyToTweet);
+        Log.d(TAG, "Accessed fragment"); //DEBUG
+        //Tell activity to open the Compose Dialog fragment
+        activity.goComposeFragment(replyToTweet); //DEBUG
     }
 }

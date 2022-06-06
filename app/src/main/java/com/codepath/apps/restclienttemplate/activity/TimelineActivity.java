@@ -36,9 +36,7 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-//https://github.com/sDong517/Meta_SimpleTweet
 public class TimelineActivity extends AppCompatActivity implements FragmentComposeListener {
-
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
     TweetDao tweetDao;
@@ -53,7 +51,6 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_timeline);
         com.codepath.apps.restclienttemplate.databinding.ActivityTimelineBinding binding = ActivityTimelineBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
@@ -61,14 +58,12 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
         client = TwitterApp.getRestClient(this);
         tweetDao = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
 
-        //find swiperefresh
+        //SwipeRefresh
         swipeContainer = findViewById(R.id.swipeContainer);
-        //configure refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        //refresh actions
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -76,16 +71,17 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
                 populateHomeTimeline();
             }
         });
-        //find recycler view
+
+        //RecyclerView
         rvTweets = findViewById(R.id.rvTweets);
         //init list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this, this, tweets);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //recycler view setup; layout manager and adapter
         rvTweets.setLayoutManager(layoutManager);
         rvTweets.setAdapter(adapter);
 
+        //Endless Scroll
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -93,7 +89,8 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
                 loadMoreData();
             }
         };
-        //query for existing tweets in DB
+
+        //Query for existing tweets in DB
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -104,13 +101,14 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
                 adapter.addAll(tweetsFromDB);
             }
         });
-        //add scroll listener to recycler view
+
+        //Scroll listener on RecyclerView
         rvTweets.addOnScrollListener(scrollListener);
         populateHomeTimeline();
     }
 
     private void loadMoreData() {
-        // Send an API request to retrieve appropriate paginated data
+        //Send an API request to retrieve appropriate paginated data
         client.getNextPageOfTweets(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -124,10 +122,9 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
                 }
             }
             @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure for loadMoreData()", throwable);
-            }
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) { Log.e(TAG, "onFailure for loadMoreData()", throwable); }
         }, tweets.get(tweets.size() - 1).tweetId);
+
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items
@@ -144,16 +141,14 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
                     List<Tweet> tweetsFromNetwork = Tweet.fromJsonArray(jsonArray);
                     adapter.clear();
                     adapter.addAll(tweetsFromNetwork);
-                    //signals refreshing has finished
+                    //Signals refreshing has finished
                     swipeContainer.setRefreshing(false);
                     AsyncTask.execute(new Runnable() {
                         @Override
                         public void run() {
                             Log.i(TAG, "Saving DB data");
-                            //insert users first
                             List<User> usersFromNetwork = User.fromJsonTweetArray(tweetsFromNetwork);
                             tweetDao.insertModel(usersFromNetwork.toArray(new User[0]));
-                            //insert tweets
                             tweetDao.insertModel(tweetsFromNetwork.toArray(new Tweet[0]));
                         }
                     });
@@ -161,41 +156,27 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
                     Log.e(TAG, "Json exception", e);
                 }
             }
+
             @Override
-            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onFailure " + response, throwable);
-            }
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) { Log.e(TAG, "onFailure " + response, throwable); }
         });
     }
 
-    //TODO: Progress bar??
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void showProgressBar() {
-        // Show progress item
-        miActionProgressItem.setVisible(true);
-    }
-
-    public void hideProgressBar() {
-        // Hide progress item
-        miActionProgressItem.setVisible(false);
-    }
-
-    //logout procedure
-    //NOTE: use menu_main for both logout and compose
-    //https://developer.android.com/training/appbar/actions#java
-    //1. create new menu resource file and inflate the layout
+    //Logout procedure
+    //1. Create new menu resource file and inflate the layout
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { //DEBUG
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
-    //2. create a function to check for clicks and perform an action
+    //2. Create a function to check for clicks and perform an action
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.actionLogout) {
@@ -203,29 +184,20 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
             return true;
         }
         if (item.getItemId() == R.id.actionCompose) {
-            goComposeFragment(null);
-            //Toast.makeText(this, "Compose clicked!", Toast.LENGTH_SHORT).show();
+            goComposeFragment(null); //replyToTweet is NULL so this is a new tweet
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    //3. navigate to login activity
+    //3. Navigate to login activity
     private void goLoginActivity() {
-        //forget who's logged in
         TwitterApp.getRestClient(this).clearAccessToken();
-        //navigate to login
         Intent i = new Intent(this, LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
         finish();
-    }
-
-    public void goComposeFragment(Tweet replyToTweet) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentCompose composeFragment = FragmentCompose.newInstance(replyToTweet);
-        composeFragment.show(fm, "activity_compose");
     }
 
     @Override
@@ -242,14 +214,19 @@ public class TimelineActivity extends AppCompatActivity implements FragmentCompo
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    //COMPOSE FRAGMENT
+    public void goComposeFragment(Tweet replyToTweet) {
+        FragmentManager fm = getSupportFragmentManager(); //DEBUG
+        FragmentCompose composeFragment = FragmentCompose.newInstance(replyToTweet);
+        composeFragment.show(fm, "activity_compose"); //DEBUG
+    }
+
     @Override
     public void onFinishComposingTweet(Tweet tweet) {
-        // new tweet is coming from Compose Frgmen
-
-        //send that new tweet to the recyclercview on top
-
+        //New Tweet is coming from FragmentCompose
+        //Send Tweet to the top of RecyclerView
         tweets.add(0, tweet);
-        //update adapter
         adapter.notifyItemInserted(0);
         rvTweets.smoothScrollToPosition(0);
     }
