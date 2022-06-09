@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:targetSdkVersion="31"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"> <!--for embedded media-->
+        android:usesCleartextTraffic="true"> <!--for embedded media w/o https-->
         <activity
             android:name=".activity.FollowActivity"
             android:exported="false" />

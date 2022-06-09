@@ -7,21 +7,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.codepath.apps.restclienttemplate.activity.ComposeActivity;
 import com.codepath.apps.restclienttemplate.activity.DetailActivity;
 import com.codepath.apps.restclienttemplate.activity.FollowActivity;
-import com.codepath.apps.restclienttemplate.activity.FragmentCompose;
 import com.codepath.apps.restclienttemplate.activity.TimelineActivity;
 import com.codepath.apps.restclienttemplate.databinding.ItemTweetBinding;
 import com.codepath.apps.restclienttemplate.models.Tweet;

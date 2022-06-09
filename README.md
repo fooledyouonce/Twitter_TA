@@ -51,7 +51,7 @@ GIF created with QuickTime Player.
 
 ## Notes
 
-N/A
+[Twitter JSON Presentation](https://docs.google.com/presentation/d/12F9HzgayilPmd4JQmVjrrdKhlyGMVCQKKB846baCX5Y/edit?usp=sharing)
 
 ## Open-source libraries used
 

@@ -62,9 +62,13 @@ public class Tweet {
             tweet.pic_url = "none";
         }
         else {
-            Log.d("Tweet", jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url"));
-            tweet.pic_url = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
+            Log.d("Tweet", jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url")); //or _https
+            tweet.pic_url = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url"); //or _https
         }
+        /*
+            * We need to fish for json data. How do we know we need to end up at "media_url"/"media_url_https"?
+            * We do NOT want to keep running the app. TOo slow and we may get blocked from making requests. We can use watches to resolve this issue.
+        */
         return tweet;
     }
 
