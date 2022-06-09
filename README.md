@@ -1,8 +1,8 @@
-# Project 3 - *Elonless Twitter*
+# Project 3 - *ElonlessTwitter*
 
-**Elonless Twitter** is an android app that allows a user to view their Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
+**ElonlessTwitter** is an Android app that allows a user to view their Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: **10** hours spent in total
+Time spent: **12** hours spent in total
 
 ## User Stories
 
@@ -30,7 +30,7 @@ The following **optional** features are implemented:
 * [X] User can tap a tweet to **open a detailed tweet view**
   * [X] User can **take favorite (and unfavorite) or retweet** actions on a tweet
 * [X] User can view more tweets as they scroll with infinite pagination
-* [ ] Compose tweet functionality is built using modal overlay
+* [X] Compose tweet functionality is built using modal overlay
 * [X] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
 * [X] Replace all icon drawables and other static image assets with [vector drawables](http://guides.codepath.org/android/Drawables#vector-drawables) where appropriate.
 * [X] User can view following / followers list through any profile they view.
@@ -45,9 +45,9 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src="twitter.gif" width=250><br>
 
-GIF created with [Kap](https://getkap.co/).
+GIF created with QuickTime Player.
 
 ## Notes
 
